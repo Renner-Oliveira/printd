@@ -37,12 +37,10 @@ describe('Printd test suite', () => {
 
         const args = Object.keys(argObj)
 
-        expect(args).toContain('window')
-        expect(args).toContain('document')
+        expect(args).toContain('iframe')
         expect(args).toContain('element')
         expect(args).toContain('launchPrint')
-        expect(typeof argObj.window).toBe('object')
-        expect(typeof argObj.document).toBe('object')
+        expect(typeof argObj.iframe).toBe('object')
         expect(typeof argObj.element).toBe('object')
         expect(typeof argObj.launchPrint).toBe('function')
 
