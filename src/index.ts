@@ -9,14 +9,13 @@ export function createStyle (doc: Document, cssText: string) {
 
 export function createIFrame (parent: HTMLElement = window.document.body) {
   const el: HTMLIFrameElement = window.document.createElement('iframe')
-  const css = 'visibility:hidden;width:0;height:0;position:absolute;z-index:-9999;bottom:0;display:none;'
+  const css = 'visibility:hidden;width:0;height:0;position:absolute;z-index:-9999;bottom:0;'
 
   el.setAttribute('src', 'about:blank')
   el.setAttribute('style', css)
   el.setAttribute('width', '0')
   el.setAttribute('height', '0')
   el.setAttribute('wmode', 'opaque')
-  el.src = 'about:blank'
 
   parent.appendChild(el)
 
@@ -27,7 +26,7 @@ export interface PrintdCallbackArgs {
   /** Iframe reference */
   iframe: HTMLIFrameElement
   /** HTMLElement copy reference */
-  element: HTMLElement
+  element?: HTMLElement
   /** Function to launch the print dialog after content was loaded */
   launchPrint: Function
 }
@@ -65,14 +64,12 @@ export default class Printd {
 
     if (!contentDocument || !contentWindow) return
 
+    this.iframe.src = 'about:blank'
     this.elCopy = el.cloneNode(true) as HTMLElement
 
     if (this.elCopy) {
       this.loading = true
-
-      if (callback) {
-        this.callback = callback
-      }
+      this.callback = callback
 
       const doc = contentWindow.document
 
@@ -90,6 +87,20 @@ export default class Printd {
     }
   }
 
+  /**
+   * Print an URL
+   *
+   * @param url URL to print
+   * @param callback Optional callback that will be triggered when content is ready to print
+   */
+  printURL (url: string, callback?: PrintdCallback) {
+    if (this.loading) return
+
+    this.loading = true
+    this.callback = callback
+    this.iframe.src = url
+  }
+
   private launchPrint (contentWindow: Window) {
     const result = contentWindow.document.execCommand('print', false, null)
 
@@ -104,7 +115,7 @@ export default class Printd {
 
       const { contentDocument, contentWindow } = this.iframe
 
-      if (!contentDocument || !contentWindow || !this.elCopy) return
+      if (!contentDocument || !contentWindow) return
 
       if (this.callback) {
         this.callback({

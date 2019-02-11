@@ -5,13 +5,16 @@ describe('Printd test suite', () => {
     let printd: Printd
     let iframe: HTMLIFrameElement
     let el: HTMLElement
+    let URL: string
     let printSpy: jasmine.Spy
+    let printURLSpy: jasmine.Spy
     let printCallbackSpy: jasmine.Spy
 
     beforeEach(() => {
       printd = new Printd()
       iframe = printd.getIFrame()
       el = document.createElement('div')
+      URL = 'http://127.0.0.1'
       el.innerHTML = '<b>Bold text!</b>'
     })
 
@@ -25,6 +28,12 @@ describe('Printd test suite', () => {
       printSpy = spyOn(printd, 'print')
       printd.print(el, 'b{}')
       expect(printSpy).toHaveBeenCalledWith(el, 'b{}')
+    })
+
+    it('should track all the arguments of its calls (printURL)', function () {
+      printURLSpy = spyOn(printd, 'printURL')
+      printd.printURL(URL)
+      expect(printURLSpy).toHaveBeenCalledWith('http://127.0.0.1')
     })
 
     it('should track all the arguments of its calls (printCallback)', function (done) {

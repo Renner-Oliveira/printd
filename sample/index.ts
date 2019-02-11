@@ -3,9 +3,16 @@ import { Printd } from '../src/index'
 const d = new Printd()
 
 const content = document.getElementById('myContent')
-const btn = document.getElementById('myButton')
+const btn1 = document.getElementById('myButton1')
+const btn2 = document.getElementById('myButton2')
 
 const cssText = `
+  @import url('https://fonts.googleapis.com/css?family=Roboto');
+
+  body {
+    font-family: 'Roboto', sans-serif;
+  }
+
   button {
     background-color: #fff;
     border: solid 2px peru;
@@ -18,11 +25,21 @@ const cssText = `
   }
 `
 
-btn.addEventListener('click', printElement)
+btn1.addEventListener('click', printElement)
+btn2.addEventListener('click', printURL)
 
 function printElement () {
   d.print(content, cssText, ({ launchPrint }) => {
-    console.log('Content loaded!')
+    console.log('Element printing: Content loaded!')
+
+    // fire printing!
+    launchPrint()
+  })
+}
+
+function printURL () {
+  d.printURL('http://localhost:1234/', ({ launchPrint }) => {
+    console.log('URL printing: Content loaded!')
 
     // fire printing!
     launchPrint()

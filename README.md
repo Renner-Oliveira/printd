@@ -40,33 +40,10 @@ You can use the library via `window.printd`.
 
 ## Usage
 
-### ES6
-
-```js
-import { Printd } from 'printd'
-
-// some styles for the element (optional)
-const cssText = `
-  table {
-    font-size: 85%;
-    font-family: sans-serif;
-    border-spacing: 0;
-    border-collapse: collapse;
-  }
-`
-
-const d = new Printd()
-
-// opens the "print dialog" of your browser to print the element
-d.print( document.getElementById('mytable'), cssText )
-```
-
-### Typescript
-
 ```ts
 import { Printd } from 'printd'
 
-const cssText: string = `
+const cssText = `
   h1 {
     color: black;
     font-family: sans-serif;
@@ -101,7 +78,7 @@ __Print parameters:__
 - __element:__ The `HTMLElement` to print.
 - __cssText:__ Optional [CSS Text](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style) that will add to head section of the iframe document.
 - __callback:__ Optional callback that will be triggered when content is ready to print.
-  - __Arguments:__
+  - __Callback arguments:__
   - __iframe__: Iframe reference. `iframe` already contains `contentWindow` and `contentDocument` references.
   - __element__: `HTMLElement` copy reference.
   - __launchPrint__: Function to launch the print dialog after content was loaded.
@@ -128,6 +105,26 @@ const cssText = `
 const printCallback = ({ launchPrint }) => launchPrint()
 
 d.print(document.getElementById('mycode'), cssText, printCallback)
+```
+
+### printURL
+
+Function to print an URL.
+
+__PrintURL parameters:__
+
+- __url:__ URL to print.
+- __callback:__ Optional callback that will be triggered when content is ready to print.
+
+```ts
+const d = new Printd()
+
+d.printURL('http://127.0.0.1/', ({ launchPrint }) => {
+  console.log('Content loaded!')
+
+  // fire printing!
+  launchPrint()
+})
 ```
 
 ### getIFrame
