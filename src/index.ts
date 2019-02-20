@@ -7,6 +7,24 @@ export function createStyle (doc: Document, cssText: string) {
   return style
 }
 
+export function createStyleByUrl (doc: Document, url: string) {
+  const style: HTMLLinkElement = doc.createElement('link')
+
+  style.type = 'text/css'
+  style.rel = 'stylesheet'
+  style.href = url
+
+  return style
+}
+
+export function createScriptByUrl (doc: Document, url: string) {
+  const script: HTMLScriptElement = doc.createElement('script')
+
+  script.src = url
+
+  return script
+}
+
 export function createIFrame (parent: HTMLElement = window.document.body) {
   const el: HTMLIFrameElement = window.document.createElement('iframe')
   const css = 'visibility:hidden;width:0;height:0;position:absolute;z-index:-9999;bottom:0;'
@@ -55,9 +73,11 @@ export default class Printd {
    *
    * @param el HTMLElement
    * @param cssText Optional CSS Text that will add to head section of the iframe document
+   * @param cssURLs Optional list of CSS files URLs that will add to head section of the iframe document
+   * @param scriptURLs Optional list of Script files URLs that will add to iframe document
    * @param callback Optional callback that will be triggered when content is ready to print
    */
-  print (el: HTMLElement, cssText?: string, callback?: PrintdCallback) {
+  print (el: HTMLElement, cssText?: string, cssURLs?: Array<string>, scriptURLs?: Array<string>, callback?: PrintdCallback) {
     if (this.loading) return
 
     const { contentDocument, contentWindow } = this.iframe
@@ -81,6 +101,17 @@ export default class Printd {
       if (cssText) {
         doc.head.appendChild(createStyle(doc, cssText))
       }
+      if (cssURLs) {
+        cssURLs.forEach((url) => {
+            doc.head.appendChild(createStyleByUrl(doc, url))
+        })
+    }
+    doc.body.appendChild(this.elCopy);
+    if (scriptURLs) {
+        scriptURLs.forEach((url) => {
+            doc.body.appendChild(createScriptByUrl(doc, url))
+        })
+    }
 
       doc.body.appendChild(this.elCopy)
       doc.close()
