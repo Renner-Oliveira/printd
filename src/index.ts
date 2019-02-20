@@ -103,15 +103,15 @@ export default class Printd {
       }
       if (cssURLs) {
         cssURLs.forEach((url) => {
-            doc.head.appendChild(createStyleByUrl(doc, url))
+          doc.head.appendChild(createStyleByUrl(doc, url))
         })
-    }
-    doc.body.appendChild(this.elCopy);
-    if (scriptURLs) {
-        scriptURLs.forEach((url) => {
+      }
+      doc.body.appendChild(this.elCopy)
+      if (scriptURLs) {
+          scriptURLs.forEach((url) => {
             doc.body.appendChild(createScriptByUrl(doc, url))
-        })
-    }
+          })
+      }
 
       doc.body.appendChild(this.elCopy)
       doc.close()
