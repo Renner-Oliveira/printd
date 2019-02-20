@@ -108,9 +108,9 @@ export default class Printd {
       }
       doc.body.appendChild(this.elCopy)
       if (scriptURLs) {
-          scriptURLs.forEach((url) => {
-            doc.body.appendChild(createScriptByUrl(doc, url))
-          })
+        scriptURLs.forEach((url) => {
+          doc.body.appendChild(createScriptByUrl(doc, url))
+        })
       }
 
       doc.body.appendChild(this.elCopy)
