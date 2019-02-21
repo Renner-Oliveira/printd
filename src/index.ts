@@ -1,4 +1,6 @@
-const isURL = /^(((http[s]?)|file):)?(\/\/)+([0-9a-zA-Z-_.].+)$/g
+const URL_LONG = /^(((http[s]?)|file):)?(\/\/)+([0-9a-zA-Z-_.=?&].+)$/g
+const URL_SHORT = /^([\.]?\/)([0-9a-zA-Z-_.=?&]+\/)*([0-9a-zA-Z-_.=?&]+)$/g
+const isValidURL = (str: string) => URL_LONG.test(str) || URL_SHORT.test(str)
 
 export function createStyle (doc: Document, cssText: string) {
   const style: HTMLStyleElement = doc.createElement('style')
@@ -96,7 +98,7 @@ export default class Printd {
     if (Array.isArray(styles)) {
       styles.forEach((value) => {
         if (value) {
-          if (isURL.test(value)) {
+          if (isValidURL(value)) {
             doc.head.appendChild(createLinkStyle(doc, value))
           } else {
             doc.head.appendChild(createStyle(doc, value))
@@ -114,7 +116,7 @@ export default class Printd {
         if (value) {
           const script = doc.createElement('script')
 
-          if (isURL.test(value)) {
+          if (isValidURL(value)) {
             script.src = value
           } else {
             script.innerText = value
