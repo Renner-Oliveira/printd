@@ -34,7 +34,7 @@
     },
     {
       "path": "./*.min.js",
-      "maxSize": "850B"
+      "maxSize": "1.5KB"
     }
   ],
   "scripts": {
